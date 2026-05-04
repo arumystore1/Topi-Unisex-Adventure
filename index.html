@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topi Unisex Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #006113; --bg: #000000; --card: #121212; --text: #ffffff; --text-muted: #999; --border: #222; }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 80px; }
+        .container { max-width: 500px; margin: 0 auto; background: var(--bg); min-height: 100vh; position: relative; }
+        
+        .product-swiper { width: 100%; aspect-ratio: 1/1; background: #000; position: relative; }
+        .swiper-pagination-bullet { background: #fff !important; opacity: 0.5; }
+        .swiper-pagination-bullet-active { opacity: 1; }
+
+        .p-main-info { padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); }
+        .p-price-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .p-price-now { font-size: 24px; font-weight: 800; color: #fff; }
+        .p-price-was { font-size: 14px; color: var(--text-muted); text-decoration: line-through; }
+        .p-discount-tag { background: #FE2C55; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 2px; }
+        .p-title { font-size: 16px; font-weight: 600; line-height: 1.4; color: #fff; margin-bottom: 12px; }
+        .p-stats-row { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--text-muted); }
+        .shipping-badge { color: #00f2ea; display: flex; align-items: center; gap: 4px; font-weight: 600; }
+
+        .t-section { padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+        .t-section-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .t-section-title { font-size: 14px; font-weight: 700; color: #fff; text-transform: uppercase; }
+        
+        /* Opsi Pemilihan Bar */
+        .option-preview-bar { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); cursor: pointer; margin-bottom: 8px; }
+        .v-preview-chips { display: flex; gap: 6px; margin-top: 8px; }
+        .v-chip { font-size: 10px; background: #222; padding: 3px 8px; border-radius: 4px; color: #bbb; border: 1px solid #333; }
+
+        .rating-summary-box { display: flex; gap: 20px; padding: 16px 0; align-items: center; border-bottom: 1px solid #1f1f1f; margin-bottom: 16px; }
+        .rating-score-large { flex: 0 0 100px; text-align: center; }
+        .score-num { font-size: 28px; font-weight: 800; color: #fff; }
+        .score-subtext { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+        .rating-bars { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .rating-bar-row { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #999; }
+        .bar-bg { flex: 1; height: 4px; background: #1f1f1f; border-radius: 2px; overflow: hidden; }
+        .bar-fill { height: 100%; background: #fff; }
+        .bar-pct { width: 30px; text-align: right; }
+
+        .review-media-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 5px 0 20px; scrollbar-width: none; }
+        .review-media-scroll img { width: 85px; height: 85px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+
+        .tt-header { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .tt-avatar { width: 30px; height: 30px; border-radius: 50%; }
+        .tt-name { font-size: 12px; font-weight: 700; color: #fff; }
+        .tt-stars { color: #fec400; font-size: 8px; margin-top: 2px; }
+        .tt-content { font-size: 13px; color: #eee; line-height: 1.5; margin-bottom: 8px; }
+        .tt-variant, .tt-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .btn-more-reviews { width: 100%; padding: 10px; background: #1f1f1f; border: 1px solid #333; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 600; margin-top: 15px; cursor: pointer; }
+
+        .shop-info-section { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); }
+        .shop-logo { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #333; }
+        .shop-name { font-size: 14px; font-weight: 700; flex: 1; }
+        .btn-visit-shop { padding: 6px 12px; border: 1px solid #333; border-radius: 4px; font-size: 12px; font-weight: 600; }
+
+        .desc-box { padding: 16px; line-height: 1.8; color: #eee; font-size: 14px; background: var(--card); }
+        .desc-box img { width: 100%; border-radius: 8px; margin: 15px 0; }
+
+        /* FIXED BOTTOM ACTION BAR - HIDDEN WHEN SCROLLING TO BOTTOM */
+        .bottom-action-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: #1a1a1a; border-top: 1px solid #222; padding: 12px 16px; z-index: 1000; transition: transform 0.3s ease; }
+        .bottom-action-bar.hidden { transform: translate(-50%, 100%); }
+        .btn-buy-full { width: 100%; background: var(--primary); color: #fff; border: none; height: 48px; border-radius: 25px; font-weight: 700; font-size: 15px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .btn-subtext { font-size: 10px; font-weight: 400; opacity: 0.9; }
+
+        /* VARIANT POPUP (BOTTOM SHEET) */
+        .v-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; opacity: 0; transition: 0.3s; }
+        .v-popup { position: fixed; bottom: -100%; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: #fff; border-radius: 15px 15px 0 0; z-index: 2001; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding-bottom: 85px; max-height: 85vh; overflow-y: auto; color: #333; }
+        .v-popup.active { bottom: 0; }
+        .v-overlay.active { display: block; opacity: 1; }
+        
+        /* HEADER POPUP - FIX IMAGE NOT CUT OFF */
+        .v-popup-header { display: flex; gap: 15px; padding: 15px 20px; position: sticky; top: 0; background: #fff; z-index: 5; border-bottom: 1px solid #f2f2f2; }
+        .v-header-img-container { width: 100px; height: 100px; border-radius: 10px; border: 1px solid #eee; margin-top: -35px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .v-header-img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+        .v-header-info { flex: 1; padding-top: 4px; }
+        .v-close { position: absolute; top: 12px; right: 15px; font-size: 20px; color: #bbb; cursor: pointer; }
+        .v-price-row { color: var(--primary); font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 8px; line-height: 1; }
+        .v-price-orig { font-size: 13px; color: #999; text-decoration: line-through; font-weight: 400; margin-top: 5px; }
+        .v-discount-badge { background: var(--primary); color: #fff; font-size: 10px; padding: 2px 5px; border-radius: 3px; height: fit-content; font-weight: 700; }
+        .v-selected-text { font-size: 13px; color: #777; margin-top: 8px; font-weight: 500; }
+
+        .v-flash-bar { background: linear-gradient(90deg, #FE2C55, #FF5C8A); color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; font-size: 12px; font-weight: 700; }
+        
+        .v-body { padding: 20px; }
+        .v-section-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; color: #333; }
+        
+        /* UPDATED GRID DESIGN (HORIZONTAL SCROLL - 3 ITEMS VISIBLE) */
+        .v-grid { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; -ms-overflow-style: none; }
+        .v-grid::-webkit-scrollbar { display: none; }
+        .v-item { flex: 0 0 calc((100% - 20px) / 3); border: 1.5px solid #f0f0f0; border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; transition: 0.2s; position: relative; }
+        .v-item img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+        .v-item-name { font-size: 11px; text-align: center; padding: 8px 4px; font-weight: 600; color: #555; background: #fff; border-top: 1px solid #f8f8f8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .v-item.active { border-color: var(--primary); border-width: 2px; }
+        .v-item.active .v-item-name { color: var(--primary); background: #fffcfc; font-weight: 700; }
+
+        /* STICKY FOOTER IN POPUP */
+        .v-footer { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; padding: 15px 20px; background: #fff; border-top: 1px solid #eee; z-index: 10; }
+        .v-btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; height: 52px; border-radius: 26px; font-weight: 800; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+
+        .summary-card { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #f2f2f2; border-radius: 12px; margin-bottom: 20px; background: #fafafa; }
+        .summary-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #eee; flex-shrink: 0; }
+        .summary-info { flex: 1; min-width: 0; }
+        .summary-title { font-size: 13px; font-weight: 800; color: #1a1a1a; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .summary-variant-name { font-size: 11px; font-weight: 700; color: var(--primary); background: #fff5f5; padding: 2px 12px; border-radius: 6px; display: inline-block; }
+        .summary-check { margin-left: 8px; color: var(--primary); font-size: 22px; }
+
+        /* Related Products Section */
+        .t-related-swiper { padding: 5px 0 20px; }
+        .t-related-card { border: 1px solid #333; border-radius: 12px; overflow: hidden; background: #121212; height: 100%; display: flex; flex-direction: column; transition: transform 0.2s; }
+        .t-related-card:active { transform: scale(0.98); }
+        .t-related-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .t-related-info { padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .t-related-name { font-size: 11px; font-weight: 700; color: #fff; height: 32px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+        .t-related-price-row { display: flex; flex-direction: column; }
+        .t-related-price-now { font-size: 13px; font-weight: 800; color: var(--primary); }
+        .t-related-price-was { font-size: 9px; color: #666; text-decoration: line-through; }
+        .t-related-btn { margin-top: 8px; font-size: 10px; font-weight: 800; color: #fff; text-align: center; padding: 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; justify-content: center; align-items: center; }
+        .lightbox img { max-width: 90%; max-height: 80%; border-radius: 12px; }
+
+        .order-section { padding: 35px 16px; background: #fff; color: #333; border-top: 10px solid #f8f8f8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="swiper product-swiper" id="main-slider"><div class="swiper-wrapper"><div class="swiper-slide"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80" id="main-product-img" style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://cdn.orderonline.id/uploads/images_1896101777893622007.jpg"  style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://cdn.orderonline.id/uploads/images_8273661777893621987.jpg"  style="width:100%; height:100%; object-fit:cover;"></div><div class="swiper-slide"><img src="https://cdn.orderonline.id/uploads/images_9979891777893622146.jpg"  style="width:100%; height:100%; object-fit:cover;"></div></div><div class="swiper-pagination"></div></div>
+        
+        <div class="p-main-info">
+            <div class="p-price-row">
+                <span class="p-price-now">Rp 139.000</span>
+                <span class="p-price-was">Rp 199.000</span>
+                <span class="p-discount-tag">-30%</span>
+            </div>
+            <h1 class="p-title">Topi Unisex Adventure</h1>
+            <div class="p-stats-row">
+                <span>⭐ 4.9 (4.2RB)</span>
+                <span>5.5RB+ terjual</span>
+                <span class="shipping-badge"><i class="fas fa-truck-fast"></i> Estimasi tiba 2-5 hari</span>
+            </div>
+        </div>
+
+        
+        <div class="shop-info-section">
+            <img src="data:image/jpeg;base64,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" class="shop-logo">
+            <div class="shop-name">Advent Official</div>
+            <button class="btn-visit-shop">Kunjungi</button>
+        </div>
+
+        <div class="option-preview-bar" onclick="openPopup()">
+            <div>
+                <div class="t-section-title" style="font-size:13px; color:#fff;">Pilih opsi</div>
+                <div class="v-preview-chips">
+                    <span class="v-chip">Cream</span><span class="v-chip">Black</span><span class="v-chip">Brown</span>
+                    
+                </div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:#666; font-size:12px;"></i>
+        </div>
+
+        
+        
+        <div class="t-section">
+            <div class="t-section-header" style="margin-bottom:12px;">
+                <div class="t-section-title">Ulasan Pelanggan</div>
+                <div style="font-size:12px; color:#999;">Lihat semua <i class="fas fa-chevron-right" style="font-size:10px; margin-left:4px;"></i></div>
+            </div>
+            
+            <div class="rating-summary-box">
+                <div class="rating-score-large">
+                    <div class="score-num">4.9 <span style="font-size:12px; color:#999; font-weight:400;">/ 5</span></div>
+                    <div class="score-subtext">⭐ Berdasarkan ulasan pembeli</div>
+                </div>
+                <div class="rating-bars">
+                    
+                        <div class="rating-bar-row">
+                            <span>5 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>
+                            <span class="bar-pct">100%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>4 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:20%"></div></div>
+                            <span class="bar-pct">20%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>3 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:5%"></div></div>
+                            <span class="bar-pct">5%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>2 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:2%"></div></div>
+                            <span class="bar-pct">2%</span>
+                        </div>
+                    
+                        <div class="rating-bar-row">
+                            <span>1 <i class="fas fa-star" style="font-size:8px;"></i></span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:1%"></div></div>
+                            <span class="bar-pct">1%</span>
+                        </div>
+                    
+                </div>
+            </div>
+
+            <div class="review-media-scroll">
+                <img src="https://down-id.img.susercontent.com/file/id-11134103-822wm-mnh6hyx1b18oae.webp" onclick="openLightbox('https://down-id.img.susercontent.com/file/id-11134103-822wm-mnh6hyx1b18oae.webp')"><img src="https://down-id.img.susercontent.com/file/id-11134103-8224p-mkzaex2hu5fq0d@resize_w720_nl.webp" onclick="openLightbox('https://down-id.img.susercontent.com/file/id-11134103-8224p-mkzaex2hu5fq0d@resize_w720_nl.webp')"><img src="https://down-id.img.susercontent.com/file/id-11134103-822wt-mmswzi4dr8cm98.webp" onclick="openLightbox('https://down-id.img.susercontent.com/file/id-11134103-822wt-mmswzi4dr8cm98.webp')">
+            </div>
+
+            <div class="t-testi-list">
+                
+                    <div class="t-testi-item">
+                        <div class="tt-header">
+                            <img src="https://ui-avatars.com/api/?name=Jamal" class="tt-avatar">
+                            <div class="tt-info">
+                                <div class="tt-name">Jamal • <span style="font-weight:400; color:#999;">Pembelian terverifikasi</span></div>
+                                <div class="tt-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="tt-content">Bagus ini semoga awet </div>
+                        <div class="tt-variant">Produk: Pilihan Default</div>
+                        <div class="tt-date">Baru saja</div>
+                    </div>
+                
+                    <div class="t-testi-item">
+                        <div class="tt-header">
+                            <img src="https://down-id.img.susercontent.com/file/id-11134233-7r98z-lxv8m9mvvekq2d_tn" class="tt-avatar">
+                            <div class="tt-info">
+                                <div class="tt-name">Candra_dika • <span style="font-weight:400; color:#999;">Pembelian terverifikasi</span></div>
+                                <div class="tt-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="tt-content">Topinya keren, modelnya masuk banget . Packing rapi dan barang sesuai pesanan.</div>
+                        <div class="tt-variant">Produk: Pilihan Default</div>
+                        <div class="tt-date">Baru saja</div>
+                    </div>
+                
+                    <div class="t-testi-item">
+                        <div class="tt-header">
+                            <img src="https://ui-avatars.com/api/?name=Syifa" class="tt-avatar">
+                            <div class="tt-info">
+                                <div class="tt-name">Syifa • <span style="font-weight:400; color:#999;">Pembelian terverifikasi</span></div>
+                                <div class="tt-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <div class="tt-content">Suka banget sama warnanya, bahannya premium gak murahan. Recommended seller!</div>
+                        <div class="tt-variant">Produk: Pilihan Default</div>
+                        <div class="tt-date">Baru saja</div>
+                    </div>
+                
+            </div>
+            <button class="btn-more-reviews" onclick="scrollToOrder()">Tampilkan ulasan lainnya</button>
+        </div>
+
+        <div class="desc-box">
+            <div class="t-section-title" style="margin-bottom:15px; color:#fff;">Deskripsi produk</div>
+            Topi Unisex Adventure Tali Hiking Hutan Camping Hat Tali trsedia warna Cream, Black, Brown
+            <div style="margin-top:20px; border-top:1px solid #222; padding-top:20px;">Terbuat dari Bahan Berkualitas
+Nyaman dan terlihat trendy saat di pakai
+barang sesuai gambar
+Untuk bahan kita menggunakan Japan drill yang ORIGINAL ya kak, bukan KW atau ada bahan campuran lainnya
+Ukuran yang tersedia all size untuk dewasa (58-60cm)</div>
+        </div>
+
+        <div id="order-section" class="order-section">
+            <div id="variant-summary"></div>
+            <div style="text-align:center; margin-bottom:25px; font-weight:800; font-size:16px; color:#1a1a1a; text-transform:uppercase; letter-spacing:1px;">Formulir Pemesanan</div>
+            <div id="order-online-container" style="border-radius:12px; overflow:hidden;"><!-- OrderOnline Embed Code - v8.0.2 --> <div class="ooef"> <form class="orderonline-embed-form" data-username="nava" data-product-slug="topi-unisex-adventure" data-product-id="69f87cb5ca5aebc55c0a7670" id="oo-embed-form-topi-unisex-adventure-9667" data-origin="orderonline"> <div class="ooef-loader"><style>.ooef-loader{visibility: hidden;opacity: 0;position: absolute;left: 0;right: 0;top: 0;bottom: 0;display: flex;justify-content: center;align-items: center;flex-direction: column;animation: ooLoadingIn 10s ease;-webkit-animation: ooLoadingIn 10s ease;animation-fill-mode: forwards;overflow: hidden}@keyframes ooLoadingIn{0%{visibility: hidden;opacity: 0}20%{visibility: visible;opacity: 0}100%{visibility: visible;opacity: 1}}@-webkit-keyframes ooLoadingIn{0%{visibility: hidden;opacity: 0}20%{visibility: visible;opacity: 0}100%{visibility: visible;opacity: 1}}.ooef-loader>div,.ooef-loader>div:after{border-radius: 50%;width: 2.5rem;height: 2.5rem}.ooef-loader>div{font-size: 10px;position: relative;text-indent: -9999em;border: .25rem solid #f5f5f5;border-left: .25rem solid #55c4cf;-webkit-transform: translateZ(0);-ms-transform: translateZ(0);transform: translateZ(0);-webkit-animation: ooLoading 1.1s infinite linear;animation: ooLoading 1.1s infinite linear}.ooef-loader.error>div{border-left: .25rem solid #ff4500;animation-duration: 5s}@-webkit-keyframes ooLoading{0%{-webkit-transform: rotate(0);transform: rotate(0)}100%{-webkit-transform: rotate(360deg);transform: rotate(360deg)}}@keyframes ooLoading{0%{-webkit-transform: rotate(0);transform: rotate(0)}100%{-webkit-transform: rotate(360deg);transform: rotate(360deg)}}</style><div aria-live="polite" role="status"><div>Loading...</div></div></div> </form> </div> <script> if (typeof xLogError != 'function') { var xLogError = function (error) { var req = new XMLHttpRequest(); var payload = JSON.stringify({ url: document.location.href, line: error.line, stack: error.stack }); var params = 'message=' + encodeURIComponent(error.name) + '&payload=' + encodeURIComponent(payload) + '&type=embed&level=error'; req.open('POST', 'https://api.orderonline.id/log', true); req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); req.send(params); }; } try { if (typeof xEmbedScript != 'function') { var xEmbedScript = function () { !function(w, d, e, v, id, t, s) { if (d.getElementById(id)) return; t = d.createElement(e);t.async = !0;t.src = v;t.id = id; s = d.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://cdn.orderonline.id/js/embed-v2-slim.min.js?v=8.0.2', 'oo-embed-js'); }; } if (typeof xEmbedInit != 'function') { var xEmbedInit = function (w, n) { if (w.ooe) return; n = w.ooe = function() { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!w._ooe) w._ooe = n; n.push = n;n.loaded = !0;n.version = '8.0.2';n.queue = []; }; } xEmbedInit(window); ooe('setup', 'redirect', 'https://nava.orderonline.id'); ooe('init', '5f119cd08dcbdb2737678706', '69f87cb5ca5aebc55c0a7670', '69f87cb5ca5aebc55c0a7671', 'oo-embed-form-topi-unisex-adventure-9667', {"mode":"page","action":"Klik untuk pemesanan","title":"Form Pemesanan","triggerPixel":true,"triggerGtm":false}); if (!window.jQuery) { !function(w, d, e, v, id, t, s) { if (d.getElementById(id)) return; t = d.createElement(e);t.async = !0;t.src = v;t.id = id; t.addEventListener('load', xEmbedScript); s = d.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://cdn.orderonline.id/js/vendor/jquery.min.js', 'oo-embed-jquery'); } else { xEmbedScript(); } } catch (e) { xLogError(e); throw e; } </script> <!-- End OrderOnline Embed Code --></div>
+        </div>
+
+        
+    </div>
+
+    <!-- STICKY FOOTER -->
+    <div id="sticky-action-bar" class="bottom-action-bar">
+        <button class="btn-buy-full" onclick="openPopup()">
+            <span>Beli sekarang</span>
+            <span class="btn-subtext">Flash Sale Rp 139.000</span>
+        </button>
+    </div>
+
+    <!-- VARIANT POPUP -->
+    <div id="v-overlay" class="v-overlay" onclick="closePopup()"></div>
+    <div id="v-popup" class="v-popup custom-scrollbar">
+        <div class="v-popup-header">
+            <div class="v-header-img-container">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80" id="v-img" class="v-header-img">
+            </div>
+            <div class="v-header-info">
+                <div class="v-price-row">
+                    <span id="v-price-now">Rp 139.000</span>
+                    <span class="v-discount-badge">-30%</span>
+                </div>
+                <div class="v-price-orig">Rp 199.000</div>
+                <div class="v-selected-text" id="v-selected-name">Pilih varian</div>
+            </div>
+            <div class="v-close" onclick="closePopup()">&times;</div>
+        </div>
+
+        <div class="v-flash-bar">
+            <span><i class="fas fa-bolt"></i> Flash Sale</span>
+            <span>Berakhir dalam <span id="v-timer">00:00:00</span></span>
+        </div>
+
+        <div class="v-body">
+            <div class="v-section-title">Warna (3)</div>
+            <div class="v-grid">
+                
+                    <div class="v-item active" onclick="selectVariant(this, '139000', 'Cream', 'https://down-id.img.susercontent.com/file/id-11134207-82251-mhqbul9kw4qo73')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-82251-mhqbul9kw4qo73">
+                        <div class="v-item-name">Cream</div>
+                    </div>
+                
+                    <div class="v-item " onclick="selectVariant(this, '139000', 'Black', 'https://down-id.img.susercontent.com/file/id-11134207-8224z-mhqbul9ktblsb2')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-8224z-mhqbul9ktblsb2">
+                        <div class="v-item-name">Black</div>
+                    </div>
+                
+                    <div class="v-item " onclick="selectVariant(this, '139000', 'Brown', 'https://down-id.img.susercontent.com/file/id-11134207-8224q-mhqbul9kuq68bb')">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-8224q-mhqbul9kuq68bb">
+                        <div class="v-item-name">Brown</div>
+                    </div>
+                
+            </div>
+        </div>
+
+        <div class="v-footer">
+            <button class="v-btn-submit" onclick="scrollToOrderAndClose()">Beli sekarang</button>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox" onclick="this.style.display='none'"><img id="lightbox-img"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('#main-slider', { pagination: { el: '.swiper-pagination' }, autoplay: { delay: 5000 } });
+
+        const actionBar = document.getElementById('sticky-action-bar');
+        const orderSection = document.getElementById('order-section');
+
+        // Logic to hide sticky action bar when at the bottom (order form)
+        window.addEventListener('scroll', () => {
+          if (!orderSection || !actionBar) return;
+          const rect = orderSection.getBoundingClientRect();
+          if (rect.top <= window.innerHeight - 100) {
+            actionBar.classList.add('hidden');
+          } else {
+            actionBar.classList.remove('hidden');
+          }
+        });
+
+        function openPopup() {
+            document.getElementById('v-overlay').classList.add('active');
+            document.getElementById('v-popup').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePopup() {
+            document.getElementById('v-overlay').classList.remove('active');
+            document.getElementById('v-popup').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function selectVariant(el, price, name, image) {
+            document.querySelectorAll('.v-item').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            
+            document.getElementById('v-price-now').innerText = 'Rp ' + Number(price).toLocaleString('id-ID');
+            document.getElementById('v-selected-name').innerText = name;
+            
+            if (image) {
+                document.getElementById('v-img').src = image;
+                const mainImg = document.getElementById('main-product-img');
+                if (mainImg) mainImg.src = image;
+            }
+
+            // Update main order summary
+            const summary = document.getElementById('variant-summary');
+            if (summary) {
+              summary.innerHTML = `
+                <div class="summary-card">
+                    <img src="${image}" class="summary-img">
+                    <div class="summary-info">
+                        <div class="summary-title">Topi Unisex Adventure</div>
+                        <div class="summary-variant-name">${name}</div>
+                    </div>
+                    <i class="fas fa-check-circle summary-check"></i>
+                </div>`;
+            }
+        }
+
+        function scrollToOrderAndClose() {
+            closePopup();
+            setTimeout(() => {
+                const target = document.getElementById('order-section');
+                if (target) {
+                  target.scrollIntoView({ behavior: 'smooth' });
+                  // Force hide bar just in case scroll listener is slow
+                  if(actionBar) actionBar.classList.add('hidden');
+                }
+            }, 350);
+        }
+
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            lb.style.display = 'flex';
+        }
+
+        function startTimer(duration, display) {
+            let timer = duration;
+            setInterval(() => {
+                let h = Math.floor(timer / 3600);
+                let m = Math.floor((timer % 3600) / 60);
+                let s = Math.floor(timer % 60);
+                display.textContent = (h<10?'0':'')+h+":"+(m<10?'0':'')+m+":"+(s<10?'0':'')+s;
+                if (--timer < 0) timer = duration;
+            }, 1000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const timerEl = document.getElementById('v-timer');
+            const durationSeconds = 1 * 3600;
+            if(timerEl) startTimer(durationSeconds, timerEl);
+            
+            const first = document.querySelector('.v-item');
+            if(first) first.click();
+
+            if (document.querySelector('.t-related-swiper')) {
+                new Swiper('.t-related-swiper', {
+                    slidesPerView: 'auto',
+                    spaceBetween: 15,
+                    freeMode: true,
+                    autoplay: { delay: 3000, disableOnInteraction: false },
+                });
+            }
+        });
+    </script>
+</body>
+</html>
